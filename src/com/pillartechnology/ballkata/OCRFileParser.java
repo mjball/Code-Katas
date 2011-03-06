@@ -19,7 +19,7 @@ public class OCRFileParser
 		}
 		symbolTable = Collections.unmodifiableMap(tempTable);
 	}
-
+	
 	public List<Integer> parse(InputStream input)
 	{
 		List<Integer> toReturn = new ArrayList<Integer>();
@@ -29,7 +29,6 @@ public class OCRFileParser
 		Scanner scanner = new Scanner(input);
 		while (scanner.hasNext())
 		{
-			
 			String entry = readNextEntry(scanner);
 			
 			if (!entry.isEmpty())
@@ -39,7 +38,7 @@ public class OCRFileParser
 			
 			if (scanner.hasNext())
 			{
-				// skip the blank line
+				// skip the blank line in between entries
 				scanner.nextLine();
 			}
 		}
@@ -51,32 +50,25 @@ public class OCRFileParser
 	{
 		int toReturn = 0;
 		
-		String[] lines = entry.split("\n");
-		
-		// find the longest line in the entry and use its length
-		// to determine the number of digits in the the entry
-		List<Integer> lineLengths = new ArrayList<Integer>();
-		for (String line : lines)
-		{
-			lineLengths.add(line.length());
-		}
-		int numDigits = Collections.max(lineLengths)/GRID_SIZE;
+		List<String> lines = Arrays.asList(entry.split("\n"));
+
+		int numDigits = computeNumDigits(lines);
 		
 		for (int currentDigit=0; currentDigit<numDigits; currentDigit++)
 		{
 			String symbol = "";
 			for (int i=0; i<GRID_SIZE; i++)
 			{
-				String currentLine = lines[i];
-				int currentLineLength = currentLine.length();
-				for (int j=0; j<GRID_SIZE; j++)
+				String line = lines.get(i);
+				int start = currentDigit*GRID_SIZE;
+				int end = start + GRID_SIZE;
+				
+				while (line.length() < end)
 				{
-					int charPosn = (currentDigit*GRID_SIZE) + j;
-					char nextChar =
-						(charPosn < currentLineLength) ? lines[i].charAt(charPosn) : SPACE;
-							
-					symbol += nextChar;
+					line += ' ';
 				}
+				
+				symbol += line.substring(start, end);
 			}
 			
 			toReturn = (toReturn*10) + parseSymbol(symbol);
@@ -93,6 +85,18 @@ public class OCRFileParser
 			toReturn += scanner.nextLine() + "\n";
 		}
 		return toReturn;
+	}
+	
+	// find the longest line in the entry and use its length
+	// to determine the number of digits in the the entry
+	private int computeNumDigits(Iterable<String> lines)
+	{
+		List<Integer> lineLengths = new ArrayList<Integer>();
+		for (String line : lines)
+		{
+			lineLengths.add(line.length());
+		}
+		return Collections.max(lineLengths)/GRID_SIZE;
 	}
 
 	private int parseSymbol(String symbol)

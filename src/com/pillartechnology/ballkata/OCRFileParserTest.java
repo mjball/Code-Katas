@@ -116,10 +116,4 @@ public class OCRFileParserTest
 		
 		assertEquals(0, results.size());
 	}
-	
-	@Test
-	public void CanDetermineAccountNumberValidity()
-	{
-		
-	}
 }
