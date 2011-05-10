@@ -1,2 +1,2 @@
-- [kataBankOCR](http://codingdojo.org/cgi-bin/wiki.pl?KataBankOCR)
-- printf: a simple (working) printf implementation that handles `%s` and `%d`.
+- [kataBankOCR](https://github.com/mjball/Code-Katas/tree/master/src/kataBankOCR):  User Story 1 @ http://codingdojo.org/cgi-bin/wiki.pl?KataBankOCR
+- [printf](https://github.com/mjball/Code-Katas/tree/master/src/printf): a simple (working) printf implementation that handles `%s` and `%d`.
