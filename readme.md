@@ -1,0 +1,2 @@
+- [kataBankOCR](http://codingdojo.org/cgi-bin/wiki.pl?KataBankOCR)
+- printf: a simple (working) printf implementation that handles `%s` and `%d`.
